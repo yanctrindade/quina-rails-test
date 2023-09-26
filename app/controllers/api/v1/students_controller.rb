@@ -6,7 +6,7 @@ module Api
           params[:homework][:student_id] = params[:student_id].to_i
           homework = Homework.new(homework_params)
           if homework.save
-            render json: { status: 'success', data: homework }, status: :created
+            render json: homework, status: :created # Rails will use the serializer here
           else
             render json: { status: 'error', message: homework.errors.full_messages }, status: :unprocessable_entity
           end
