@@ -48,3 +48,14 @@ Please organize, design, test, and document your code as if it were going into p
 All the best and happy coding,
 
 The Quina Team
+
+## How to Run the project
+
+Project was implemented using rails 7.0.2 and ruby 3.2.2 with Docker Image.   
+
+```
+docker-compose build
+docker-compose run web rake db:create
+docker-compose run web rake db:migrate
+docker-compose up
+```

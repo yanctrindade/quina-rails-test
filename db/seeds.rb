@@ -5,3 +5,5 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
+Student.create!(name: "John Doe") if Student.count.zero?
+Teacher.create!(name: "Mrs. Smith") if Teacher.count.zero?
