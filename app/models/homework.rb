@@ -15,6 +15,11 @@ class Homework < ApplicationRecord
 
   validates :attachment, attached: true, content_type: ['image/jpeg', 'application/pdf']
 
+  scope :by_grade, -> (grade) { where(grade: grade) }
+  scope :by_assignment_name, -> (name) { where('assignment_name LIKE ?', "%#{name}%") }
+  scope :by_date_range, -> (from_date, to_date) { where(submitted_at: from_date..to_date) }
+  scope :by_student_name, -> (student_name) { joins(:student).where('students.name LIKE ?', "%#{student_name}%") }
+
   before_create :set_submitted_at
 
   private

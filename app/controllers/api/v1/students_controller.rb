@@ -19,8 +19,9 @@ module Api
         end
   
         def search
-          homeworks = Homework.where(grade: Homework.grades[params[:grade]])
-          render json: { data: homeworks }, status: :ok
+          student = Student.find(params[:id])
+          homeworks = Api::V1::HomeworkSearch.filter(params).where(student: student)
+          render json: { homeworks: homeworks }
         end
   
         private

@@ -16,7 +16,8 @@ module Api
         end
   
         def search
-          # Implement the filter logic here
+          homeworks = Api::V1::HomeworkSearch.filter(params)
+          render json: { homeworks: homeworks }
         end
   
         private
