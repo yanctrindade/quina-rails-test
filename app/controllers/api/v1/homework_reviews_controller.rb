@@ -4,12 +4,12 @@ module Api
         before_action :find_homework, only: [:update]
   
         def index
-          homeworks = Homework.where(graded_at: nil) # As an example, showing ungraded homeworks
+          homeworks = Homework.all
           render json: { data: homeworks }, status: :ok
         end
   
         def update
-          @homework.teacher_id = params[:teacher_id] # Assuming teacher_id is passed in params
+          @homework.teacher_id = params[:teacher_id]
           if @homework.update(review_params)
             render json: { status: 'success', data: @homework }, status: :ok
           else
@@ -29,7 +29,7 @@ module Api
         end
   
         def review_params
-          params.require(:homework).permit(:grade, :teacher_note).merge(graded_at: Time.current)
+          params.require(:homework).permit(:grade, :teacher_note, :teacher_id).merge(graded_at: Time.current)
         end
       end
     end

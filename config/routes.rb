@@ -10,7 +10,7 @@ Rails.application.routes.draw do
         end
       end
       
-      resources :teachers, only: [:index, :update] do
+      resources :teachers, only: [:create, :index, :update] do
         resources :homework_reviews, only: [:create, :index, :update] do
           collection do
             get 'search', to: 'homework_reviews#search'
