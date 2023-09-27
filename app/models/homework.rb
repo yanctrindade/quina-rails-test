@@ -20,11 +20,15 @@ class Homework < ApplicationRecord
   scope :by_date_range, -> (from_date, to_date) { where(submitted_at: from_date..to_date) }
   scope :by_student_name, -> (student_name) { joins(:student).where('students.name LIKE ?', "%#{student_name}%") }
 
-  before_create :set_submitted_at
+  before_create :set_submitted_at, :set_student_name
 
   private
 
   def set_submitted_at
     self.submitted_at = Time.current
+  end
+  
+  def set_student_name
+    self.student_name = self.student.name
   end
 end

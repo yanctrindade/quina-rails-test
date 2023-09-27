@@ -1,29 +1,25 @@
 module Api
     module V1
       class TeachersController < ApplicationController
-        def index
-          homeworks = Homework.all
-          render json: { data: homeworks }, status: :ok
-        end
-  
-        def update
-          homework = Homework.find(params[:id])
-          if homework.update(teacher_params)
-            render json: { status: 'success', data: homework }, status: :ok
+
+        def create
+          teacher = Teacher.new(teacher_params)
+          if teacher.save
+            render json: { teacher: teacher }, status: :created
           else
-            render json: { status: 'error', message: homework.errors.full_messages }, status: :unprocessable_entity
+            render json: { status: 'error', message: teacher.errors.full_messages }, status: :unprocessable_entity
           end
         end
-  
-        def search
-          homeworks = Api::V1::HomeworkSearch.filter(params)
-          render json: { homeworks: homeworks }
+
+        def index
+          teachers = Teacher.all
+          render json: { teachers: teachers }, status: :ok
         end
   
         private
   
         def teacher_params
-          params.require(:homework).permit(:grade, :teacher_note, :graded_at)
+          params.require(:teacher).permit(:name)
         end
       end
     end
