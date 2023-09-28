@@ -28,4 +28,53 @@ RSpec.describe 'HomeworkReviews API', type: :request do
       expect(json_response['data'].size).to eq(1)
     end
   end
+
+  describe 'PUT /api/v1/homework_reviews/:id' do
+    it 'updates the homework with valid attributes' do
+      student = Student.create(name: 'Student 1')
+      teacher = Teacher.create(name: 'Teacher 1')
+      # Create a homework record manually
+      homework = Homework.create(
+        grade: 'ungraded',
+        assignment_name: 'Assignment 1',
+        student_id: student.id,
+        submitted_at: Time.current
+      )
+
+      put "/api/v1/teachers/#{teacher.id}/homework_reviews/#{homework.id}", params: {
+        teacher_id: teacher.id,
+        homework: {
+          grade: 'A',
+          teacher_note: 'Good work' # Update other attributes as needed
+        }
+      }
+
+      expect(response).to have_http_status(:ok)
+      expect(JSON.parse(response.body)["data"]["grade"]).to eq('A') # Verify the updated data
+    end
+
+    it 'does not update the homework with invalid attributes' do
+      student = Student.create(name: 'Student 1')
+      teacher = Teacher.create(name: 'Teacher 1')
+      # Create a homework record manually
+      homework = Homework.create(
+        grade: 'ungraded',
+        assignment_name: 'Assignment 1',
+        student_id: student.id,
+        submitted_at: Time.current
+      )
+
+      put "/api/v1/teachers/#{teacher.id}/homework_reviews/#{homework.id}", params: {
+        teacher_id: 1, # Provide a valid teacher_id
+        homework: {
+          grade: 'InvalidGrade', # Provide invalid grade to trigger validation error
+          teacher_note: 'Good work' # Update other attributes as needed
+        }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(JSON.parse(response.body)["status"]).to eq('error')
+      # Add more expectations for error messages or other validations
+    end
+  end
 end
