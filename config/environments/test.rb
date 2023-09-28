@@ -57,4 +57,8 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # Set the default host for URL generation in Active Storage
+  config.active_storage.service_urls_expire_in = 1.minute
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 end

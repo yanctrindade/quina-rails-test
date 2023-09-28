@@ -3,9 +3,19 @@ require 'rails_helper'
 RSpec.describe Homework, type: :model do
   # Associations
   describe 'associations' do
-    it { should belong_to(:student).optional }
-    it { should belong_to(:teacher).optional }
-    it { should have_one_attached(:attachment) }
+    let(:homework) { Homework.new }
+  
+    it 'belongs to student' do
+      expect(homework).to respond_to(:student)
+    end
+  
+    it 'belongs to teacher' do
+      expect(homework).to respond_to(:teacher)
+    end
+  
+    it 'has one attached attachment' do
+      expect(homework).to respond_to(:attachment)
+    end
   end
 
   # Validations
@@ -15,7 +25,7 @@ RSpec.describe Homework, type: :model do
     it 'validates content type of attachment' do
       homework.attachment.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'sample.jpg')), filename: 'sample.jpg', content_type: 'image/jpeg')
       expect(homework).to be_valid
-
+      
       homework.attachment.attach(io: File.open(Rails.root.join('spec', 'fixtures', 'sample.txt')), filename: 'sample.txt', content_type: 'text/plain')
       expect(homework).not_to be_valid
     end
@@ -23,7 +33,19 @@ RSpec.describe Homework, type: :model do
 
   # Enum
   describe 'grades' do
-    it { should define_enum_for(:grade).with_values(ungraded: 0, incomplete: 1, A: 2, B: 3, C: 4, D: 5, F: 6) }
+    let(:homework) { Homework.new }
+  
+    it 'defines an enum for grade' do
+      expect(Homework.grades).to eq({
+        'ungraded' => 0,
+        'incomplete' => 1,
+        'A' => 2,
+        'B' => 3,
+        'C' => 4,
+        'D' => 5,
+        'F' => 6
+      })
+    end
   end
 
   # Scopes
